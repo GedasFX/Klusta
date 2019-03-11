@@ -32,13 +32,17 @@
                 android:id="@+id/button8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Graph #1" />
+                android:backgroundTintMode="add"
+                android:text="Graph #1"
+                android:textAlignment="viewStart" />
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Graph #2" />
+                android:backgroundTintMode="add"
+                android:text="Graph #2"
+                android:textAlignment="viewStart" />
 
         </LinearLayout>
     </ScrollView>
