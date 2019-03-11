@@ -26,5 +26,4 @@
                 android:title="@string/preferences" />
         </menu>
     </item>
-
 </menu>
