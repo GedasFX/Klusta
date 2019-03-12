@@ -82,7 +82,8 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="recent">Recent</string>
-    <string name="import_export">Import/Export</string>
+    <string name="import_">Import</string>
     <string name="configuration">Configuration</string>
     <string name="preferences">Preferences</string>
+    <string name="title_activity_modify">Tree Editor</string>
 </resources>
