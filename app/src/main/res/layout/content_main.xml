@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/btnView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTintMode="add"
@@ -37,7 +37,7 @@
                 android:textAlignment="viewStart" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btnView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTintMode="add"

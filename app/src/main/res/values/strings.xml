@@ -90,5 +90,10 @@
     <string name="big_text">Big Text</string>
     <string name="enter_header_text_here">Enter header text here</string>
     <string name="commit">Commit</string>
-    <string name="finish">Finish</string>
+    <string name="finish">Exit</string>
+    <string name="title_activity_swiper"></string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="for_yes"><![CDATA[For yes ->]]></string>
+    <string name="for_no"><![CDATA[<- For no]]></string>
+    <string name="optional_image">Optional Image</string>
 </resources>

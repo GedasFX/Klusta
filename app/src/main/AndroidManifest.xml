@@ -10,8 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".SwiperActivity"
+            android:label="@string/title_activity_swiper"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ModifyActivity"
-            android:label="@string/title_activity_modify"></activity>
+            android:label="@string/title_activity_modify" />
         <activity android:name=".ImportActivity" />
         <activity
             android:name=".SettingsActivity"
