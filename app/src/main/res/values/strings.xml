@@ -86,4 +86,9 @@
     <string name="configuration">Configuration</string>
     <string name="preferences">Preferences</string>
     <string name="title_activity_modify">Tree Editor</string>
+    <string name="enter_description_text_here">Enter description text here</string>
+    <string name="big_text">Big Text</string>
+    <string name="enter_header_text_here">Enter header text here</string>
+    <string name="commit">Commit</string>
+    <string name="finish">Finish</string>
 </resources>

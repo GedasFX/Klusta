@@ -9,8 +9,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="287dp"
-        android:layout_height="363dp"
+        android:layout_width="300dp"
+        android:layout_height="340dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -27,7 +27,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Big Text"
+            android:text="@string/big_text"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,12 +36,14 @@
         <EditText
             android:id="@+id/editText3"
             android:layout_width="0dp"
-            android:layout_height="122dp"
+            android:layout_height="100dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
+            android:hint="@string/enter_header_text_here"
+            android:gravity="top"
             android:inputType="textMultiLine"
             app:layout_constraintBottom_toTopOf="@+id/textView6"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,12 +67,14 @@
         <EditText
             android:id="@+id/editText4"
             android:layout_width="0dp"
-            android:layout_height="97dp"
+            android:layout_height="100dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="68dp"
             android:ems="10"
             android:inputType="textMultiLine"
+            android:hint="@string/enter_description_text_here"
+            android:gravity="top"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -81,7 +85,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Button"
+            android:backgroundTint="@color/colorCancel"
+            android:text="@string/finish"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText4" />
@@ -91,22 +96,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Button"
+            android:backgroundTint="@color/colorConfirm"
+            android:text="@string/commit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText4" />
 
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="72dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="8dp"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button4"
-            app:layout_constraintStart_toEndOf="@+id/button3"
-            app:layout_constraintTop_toBottomOf="@+id/editText4"
-            app:layout_constraintVertical_bias="0.6" />
     </android.support.constraint.ConstraintLayout>
 
     <ImageButton
@@ -150,7 +145,7 @@
         style="@android:style/Widget.ImageButton"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
