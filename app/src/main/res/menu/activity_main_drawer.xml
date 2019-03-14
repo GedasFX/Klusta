@@ -16,16 +16,16 @@
 
     </group>
 
-    <item
-        android:checkable="false"
-        android:title="@string/configuration">
-        <menu>
-            <item
-                android:id="@+id/nav_manage"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="@string/preferences" />
-        </menu>
-    </item>
+    <!--<item-->
+        <!--android:checkable="false"-->
+        <!--android:title="@string/configuration">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_manage"-->
+                <!--android:icon="@drawable/ic_menu_manage"-->
+                <!--android:title="@string/preferences" />-->
+        <!--</menu>-->
+    <!--</item>-->
     <item
         android:checkable="false"
         android:title="@string/support">
