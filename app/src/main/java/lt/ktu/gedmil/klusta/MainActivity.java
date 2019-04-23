@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            //startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -88,9 +88,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_manage) {
-            startActivity(new Intent(this, SettingsActivity.class));
-        } else if (id == R.id.nav_import) {
+        if (id == R.id.nav_import) {
             startActivity(new Intent(this, ImportActivity.class));
         } else if (id == R.id.nav_support) {
             startActivity(new Intent(this, DonateActivity.class));
