@@ -14,6 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,14 +33,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            startActivity(new Intent(MainActivity.this, ModifyActivity.class));
-            }
-        });
-
-        findViewById(R.id.btnView1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            startActivity(new Intent(MainActivity.this, SwiperActivity.class));
+                startActivity(new Intent(MainActivity.this, TreeEditActivity.class));
             }
         });
 
@@ -48,6 +45,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        DatabaseHelper db = new DatabaseHelper(this);
+        List<Tree> trees = db.getAllTrees();
+
+        TreeListAdapter adapter = new TreeListAdapter(this, R.layout.tree_list_adapter_view, trees);
+        ((ListView) findViewById(R.id.treeList)).setAdapter(adapter);
     }
 
     @Override

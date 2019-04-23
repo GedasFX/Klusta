@@ -45,12 +45,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String CREATE_TREEDATA_TABLE = "CREATE TABLE " + TABLE_TREEDATA + " (" +
-                KEY_ID_TREE + " INTEGER PRIMARY KEY NOT NULL, " +
-                KEY_ID_ELEMENT + " INTEGER PRIMARY KEY NOT NULL, " +
+                KEY_ID + " INTEGER PRIMARY KEY NOT NULL, " +
+                KEY_ID_TREE + " INTEGER NOT NULL, " +
+                KEY_ID_ELEMENT + " INTEGER NOT NULL, " +
                 KEY_ID_REDIRECT + " INTEGER, " +
                 KEY_BIGTEXT + " TEXT, " +
                 KEY_SMALLTEXT + " TEXT, " +
-                "FOREIGN KEY(" + KEY_ID_REDIRECT + ") REFERENCES "+ TABLE_TREEDATA + "(" + KEY_ID_ELEMENT + "))";
+                "FOREIGN KEY(" + KEY_ID_TREE + ") REFERENCES "+ TABLE_TREES + "(" + KEY_ID + "))";
 
         final String CREATE_TREES_TABLE = "CREATE TABLE " + TABLE_TREES + " ( " +
                 KEY_ID + " INTEGER PRIMARY KEY NOT NULL, " +
@@ -104,6 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, tree.getName());
+        values.put(KEY_LAST_MODIFIED, tree.getLastOpened());
 
         int treeId = (int) db.insert(TABLE_TREES, null, values);
         db.close();
@@ -163,6 +165,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return tree;
+    }
+
+    public List<Tree> getAllTrees() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        final String selectQuery = "SELECT * FROM " + TABLE_TREES + "" +
+                " ORDER BY " + KEY_LAST_MODIFIED + " DESC";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<Tree> trees = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Tree tree = new Tree(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Integer.parseInt(cursor.getString(2))); // Element id, tree id
+                trees.add(tree);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return trees;
     }
 
     /**
