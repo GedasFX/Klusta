@@ -1,8 +1,8 @@
 package lt.ktu.gedmil.klusta;
 
 class Tree {
-    String name;
-    long lastOpened; // Timestamp
+    private String name;
+    private long lastOpened; // Timestamp
 
     public Tree(String name) {
         this.lastOpened = System.currentTimeMillis() / 1000;
