@@ -28,14 +28,14 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, ModifyActivity.class));
+            startActivity(new Intent(MainActivity.this, ModifyActivity.class));
             }
         });
 
         findViewById(R.id.btnView1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SwiperActivity.class));
+            startActivity(new Intent(MainActivity.this, SwiperActivity.class));
             }
         });
 
