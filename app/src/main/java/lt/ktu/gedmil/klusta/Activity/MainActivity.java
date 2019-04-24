@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity
      */
     public void onEditButtonClick(View view) {
         startActivity(new Intent(this, TreeEditActivity.class)
-                .putExtra("TreeId", ((Tree)view.getTag()).getId()));
+                .putExtra("TreeId", ((Tree) view.getTag()).getId()));
         Log.d("Main", view.getTag().toString());
     }
 

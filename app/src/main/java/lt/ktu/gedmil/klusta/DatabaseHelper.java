@@ -56,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 KEY_ID_REDIRECT + " INTEGER, " +
                 KEY_BIGTEXT + " TEXT, " +
                 KEY_SMALLTEXT + " TEXT, " +
-                "FOREIGN KEY(" + KEY_ID_TREE + ") REFERENCES "+ TABLE_TREES + "(" + KEY_ID + "))";
+                "FOREIGN KEY(" + KEY_ID_TREE + ") REFERENCES " + TABLE_TREES + "(" + KEY_ID + "))";
 
         final String CREATE_TREES_TABLE = "CREATE TABLE " + TABLE_TREES + " ( " +
                 KEY_ID + " INTEGER PRIMARY KEY NOT NULL, " +
@@ -82,9 +82,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Adds an element to a particular tree
-     * @param id Element Id
+     *
+     * @param id      Element Id
      * @param tree_id Tree Id
-     * @param tree Tree Data
+     * @param tree    Tree Data
      */
     public void addTreeElement(int id, int tree_id, TreeElement tree) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -102,6 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Adds a tree to trees table
+     *
      * @param tree Tree to add to the table
      * @return Added tree's id
      */
@@ -120,8 +122,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Fetches a particular element of a particular tree
+     *
      * @param tree_id Tree Id
-     * @param id Element Id
+     * @param id      Element Id
      * @return Tree element with given element and tree ids.
      */
     public TreeElement getTreeElement(int tree_id, int id) {
@@ -147,7 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Tree getTree(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        final Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID,KEY_NAME,KEY_LAST_MODIFIED},
+        final Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID, KEY_NAME, KEY_LAST_MODIFIED},
                 KEY_ID + "=?", new String[]{String.valueOf(id)},
                 null, null, null, null);
 
@@ -166,6 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Fetches all elements of a given tree
+     *
      * @param tree_id Tree Id
      * @return All of the nodes of a particular tree.
      */
@@ -216,8 +220,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Removes a node of a given id of a tree of a given id
+     *
      * @param tree_id Tree id
-     * @param id Element Id
+     * @param id      Element Id
      */
     public void deleteTreeElement(int tree_id, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -229,6 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Removes the tree of a given id and all of the associate data
+     *
      * @param id Tree id no.
      */
     public void deleteTree(int id) {
@@ -243,8 +249,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Updates the tree name.
+     *
      * @param treeId Id of the tree to update
-     * @param tree Tree with name element of the name
+     * @param tree   Tree with name element of the name
      */
     public void editTree(int treeId, Tree tree) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -261,6 +268,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Updates tree last opened field for most recently opened purposes.
+     *
      * @param treeId Tree's id.
      */
     public void updateTreeOpenTime(int treeId) {

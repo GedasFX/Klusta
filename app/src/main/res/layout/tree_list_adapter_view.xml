@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="horizontal"
         android:weightSum="120"
-        android:descendantFocusability="blocksDescendants"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,10 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_weight="30"
-            android:gravity="center"
-            android:focusableInTouchMode="false"
             android:clickable="false"
             android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -38,10 +37,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:baselineAligned="false"
-                android:gravity="center"
-                android:focusableInTouchMode="false"
                 android:clickable="false"
                 android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
