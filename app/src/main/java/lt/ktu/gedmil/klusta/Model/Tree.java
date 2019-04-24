@@ -1,6 +1,6 @@
-package lt.ktu.gedmil.klusta;
+package lt.ktu.gedmil.klusta.Model;
 
-class Tree {
+public class Tree {
     private int id;
     private String name;
     private long lastOpened; // Timestamp

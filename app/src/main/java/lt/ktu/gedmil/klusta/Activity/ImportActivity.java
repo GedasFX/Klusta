@@ -1,13 +1,15 @@
-package lt.ktu.gedmil.klusta;
+package lt.ktu.gedmil.klusta.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ModifyActivity extends AppCompatActivity {
+import lt.ktu.gedmil.klusta.R;
+
+public class ImportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_modify);
+        setContentView(R.layout.activity_import);
     }
 }

@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TreeEditActivity"></activity>
-        <activity android:name=".DonateActivity" />
+        <activity android:name=".Activity.TreeEditActivity"></activity>
+        <activity android:name=".Activity.DonateActivity" />
         <activity
-            android:name=".SwiperActivity"
+            android:name=".Activity.SwiperActivity"
             android:label="@string/title_activity_swiper"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ModifyActivity"
+            android:name=".Activity.ModifyActivity"
             android:label="@string/title_activity_modify" />
-        <activity android:name=".ImportActivity" />
+        <activity android:name=".Activity.ImportActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

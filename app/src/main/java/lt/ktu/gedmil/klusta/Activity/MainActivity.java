@@ -1,26 +1,33 @@
-package lt.ktu.gedmil.klusta;
+package lt.ktu.gedmil.klusta.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.SupportActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import java.util.List;
+import lt.ktu.gedmil.klusta.Adapter.TreeListAdapter;
+import lt.ktu.gedmil.klusta.DatabaseHelper;
+import lt.ktu.gedmil.klusta.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private TreeListAdapter adapter;
+    private DatabaseHelper db;
+    private ListView lw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +35,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        db = new DatabaseHelper(this);
+        adapter = new TreeListAdapter(this, R.layout.tree_list_adapter_view, db.getAllTrees());
+        lw = findViewById(R.id.treeList);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,11 +57,26 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DatabaseHelper db = new DatabaseHelper(this);
-        List<Tree> trees = db.getAllTrees();
+        lw.setAdapter(adapter);
+        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        TreeListAdapter adapter = new TreeListAdapter(this, R.layout.tree_list_adapter_view, trees);
-        ((ListView) findViewById(R.id.treeList)).setAdapter(adapter);
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item = view.toString();
+
+                Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Update the view after an edit
+        adapter.clear();
+        adapter.addAll(db.getAllTrees());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -101,5 +127,13 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Handler for Edit button click. Information about element is stored in the tag.
+     * @param view
+     */
+    public void onEditButtonClick(View view) {
+        Log.d("Main", view.getTag().toString());
     }
 }

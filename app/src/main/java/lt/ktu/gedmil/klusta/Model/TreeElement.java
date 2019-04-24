@@ -1,6 +1,6 @@
-package lt.ktu.gedmil.klusta;
+package lt.ktu.gedmil.klusta.Model;
 
-class TreeElement {
+public class TreeElement {
     private int id;
     private int treeId;
 

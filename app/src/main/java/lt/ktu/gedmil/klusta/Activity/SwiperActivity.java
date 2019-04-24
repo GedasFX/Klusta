@@ -1,4 +1,4 @@
-package lt.ktu.gedmil.klusta;
+package lt.ktu.gedmil.klusta.Activity;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import lt.ktu.gedmil.klusta.R;
 
 public class SwiperActivity extends AppCompatActivity {
 

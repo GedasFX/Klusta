@@ -89,7 +89,6 @@
     <string name="enter_description_text_here">Enter description text here</string>
     <string name="big_text">Big Text</string>
     <string name="enter_header_text_here">Enter header text here</string>
-    <string name="commit">Commit</string>
     <string name="finish">Exit</string>
     <string name="title_activity_swiper"></string>
     <string name="section_format">Hello World from section: %1$d</string>
@@ -105,4 +104,12 @@
     <string name="support">Support</string>
     <string name="donate">Donate</string>
     <string name="create">Create</string>
+    <string name="tree_name">Tree name</string>
+    <string name="name_of_the_tree">Name of the tree</string>
+    <string name="edit_tree_contents">Edit tree contents</string>
+    <string name="clear_all_entries">Clear all entries</string>
+    <string name="commit">Commit</string>
+    <string name="dialog_confirm_delete">Are you sure you wish to delete this tree?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

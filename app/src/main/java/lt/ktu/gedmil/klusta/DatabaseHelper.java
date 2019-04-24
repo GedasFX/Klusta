@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import lt.ktu.gedmil.klusta.Model.Tree;
+import lt.ktu.gedmil.klusta.Model.TreeElement;
+
 /**
  * Provides an interface to the database for TreeData and Trees tables
  */
