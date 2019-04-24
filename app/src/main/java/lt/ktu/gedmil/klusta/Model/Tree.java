@@ -6,7 +6,6 @@ public class Tree {
     private long lastOpened; // Timestamp
 
     public Tree(String name) {
-        this.lastOpened = System.currentTimeMillis() / 1000;
         this.name = name;
     }
 

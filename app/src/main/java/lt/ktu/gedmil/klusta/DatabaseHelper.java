@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,7 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, tree.getName());
-        values.put(KEY_LAST_MODIFIED, tree.getLastOpened());
+        values.put(KEY_LAST_MODIFIED, System.currentTimeMillis());
 
         int treeId = (int) db.insert(TABLE_TREES, null, values);
         db.close();
@@ -125,7 +127,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public TreeElement getTreeElement(int tree_id, int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        final Cursor cursor = db.query(TABLE_TREEDATA, new String[]{KEY_ID_ELEMENT, KEY_ID_TREE, KEY_BIGTEXT, KEY_SMALLTEXT, KEY_ID_REDIRECT},
+        final Cursor cursor = db.query(TABLE_TREEDATA,
+                new String[]{KEY_ID_ELEMENT, KEY_ID_TREE, KEY_BIGTEXT, KEY_SMALLTEXT, KEY_ID_REDIRECT},
                 KEY_ID_ELEMENT + "=?", new String[]{String.valueOf(id)},
                 null, null, null, null);
         if (cursor != null) {
@@ -133,7 +136,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         assert cursor != null;
-        TreeElement el = new TreeElement(id, tree_id, cursor.getString(2), cursor.getString(3), Integer.getInteger(cursor.getString(4)));
+        TreeElement el = new TreeElement(id, tree_id, cursor.getString(2),
+                cursor.getString(3), Integer.getInteger(cursor.getString(4)));
+
+        cursor.close();
+        db.close();
+        return el;
+    }
+
+    public Tree getTree(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        final Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID,KEY_NAME,KEY_LAST_MODIFIED},
+                KEY_ID + "=?", new String[]{String.valueOf(id)},
+                null, null, null, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        assert cursor != null;
+        Tree el = new Tree(id, cursor.getString(1),
+                Long.parseLong(cursor.getString(2)));
 
         cursor.close();
         db.close();
@@ -180,7 +204,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Tree> trees = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                Tree tree = new Tree(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Integer.parseInt(cursor.getString(2))); // Element id, tree id
+                Tree tree = new Tree(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Long.parseLong(cursor.getString(2))); // Element id, tree id
                 trees.add(tree);
             } while (cursor.moveToNext());
         }
@@ -199,7 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         final String delete = "DELETE FROM " + TABLE_TREEDATA + " WHERE " + KEY_ID_TREE + "=" + tree_id + " AND " + KEY_ID_ELEMENT + "=" + id;
-        db.rawQuery(TABLE_TREEDATA, null);
+        db.execSQL(delete);
         db.close();
     }
 
@@ -212,8 +236,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         final String deleteTreeData = "DELETE FROM " + TABLE_TREEDATA + " WHERE " + KEY_ID_TREE + "=" + id;
         final String deleteTree = "DELETE FROM " + TABLE_TREES + " WHERE " + KEY_ID + "=" + id;
-        db.execSQL(deleteTreeData, null);
-        db.execSQL(deleteTree, null);
+        db.execSQL(deleteTreeData);
+        db.execSQL(deleteTree);
+        db.close();
+    }
+
+    /**
+     * Updates the tree name.
+     * @param treeId Id of the tree to update
+     * @param tree Tree with name element of the name
+     */
+    public void editTree(int treeId, Tree tree) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, tree.getName());
+        values.put(KEY_LAST_MODIFIED, System.currentTimeMillis());
+
+        db.update(TABLE_TREES, values, KEY_ID + "=?",
+                new String[]{String.valueOf(treeId)});
+
+        db.close();
+    }
+
+    /**
+     * Updates tree last opened field for most recently opened purposes.
+     * @param treeId Tree's id.
+     */
+    public void updateTreeOpenTime(int treeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_LAST_MODIFIED, System.currentTimeMillis());
+
+        db.update(TABLE_TREES, values, KEY_ID + "=?",
+                new String[]{String.valueOf(treeId)});
+
         db.close();
     }
 }

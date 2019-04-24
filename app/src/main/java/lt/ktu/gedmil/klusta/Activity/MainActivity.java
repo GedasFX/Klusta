@@ -1,5 +1,7 @@
 package lt.ktu.gedmil.klusta.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import lt.ktu.gedmil.klusta.Adapter.TreeListAdapter;
 import lt.ktu.gedmil.klusta.DatabaseHelper;
+import lt.ktu.gedmil.klusta.Model.Tree;
 import lt.ktu.gedmil.klusta.R;
 
 public class MainActivity extends AppCompatActivity
@@ -73,6 +76,13 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
+        updateList();
+    }
+
+    /**
+     * Updates the entry.
+     */
+    private void updateList() {
         // Update the view after an edit
         adapter.clear();
         adapter.addAll(db.getAllTrees());
@@ -130,10 +140,32 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Handler for Edit button click. Information about element is stored in the tag.
-     * @param view
+     * Handler for Edit button click. Information about the tree is stored in the tag.
      */
     public void onEditButtonClick(View view) {
+        startActivity(new Intent(this, TreeEditActivity.class)
+                .putExtra("TreeId", ((Tree)view.getTag()).getId()));
         Log.d("Main", view.getTag().toString());
+    }
+
+    /**
+     * Handler for Delete button click. Information about the tree is stored in the tag.
+     */
+    public void onDeleteButtonClick(final View view) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_confirm_delete)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Tree tree = ((Tree) view.getTag());
+                        db.deleteTree(tree.getId());
+                        adapter.remove(tree);
+                    }
+                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        }).show();
     }
 }
