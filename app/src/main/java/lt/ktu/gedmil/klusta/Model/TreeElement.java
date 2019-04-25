@@ -4,6 +4,10 @@ public class TreeElement {
     private int id;
     private int treeId;
 
+    private Integer parentId;
+    private Integer leftId;
+    private Integer rightId;
+
     private String bigText;
     private String smallText;
 
@@ -15,6 +19,17 @@ public class TreeElement {
         this.bigText = bigText;
         this.smallText = smallText;
         this.redirect = redirect;
+    }
+
+    public TreeElement(int id, int treeId, String bigText, String smallText, Integer redirect, int parentId) {
+        this(id, treeId, bigText, smallText, redirect);
+        this.parentId = parentId;
+    }
+
+    public TreeElement(int id, int treeId, String bigText, String smallText, Integer redirect, Integer parentId, Integer left, Integer right) {
+        this(id, treeId, bigText, smallText, redirect, parentId);
+        this.leftId = left;
+        this.rightId = right;
     }
 
     public TreeElement(int id, int treeId) {
@@ -60,5 +75,29 @@ public class TreeElement {
 
     public void setRedirect(Integer redirect) {
         this.redirect = redirect;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Integer getLeftId() {
+        return leftId;
+    }
+
+    public void setLeftId(Integer leftId) {
+        this.leftId = leftId;
+    }
+
+    public Integer getRightId() {
+        return rightId;
+    }
+
+    public void setRightId(Integer rightId) {
+        this.rightId = rightId;
     }
 }
