@@ -107,6 +107,9 @@ public class ModifyActivity extends AppCompatActivity {
         if (mCurrent.getLeftId() == null) { // If button is create (+)
             addNewNodePair();
         } else { // If button is an arrow
+            mCurrent.setBigText(tbBigText.getText().toString());
+            mCurrent.setSmallText(tbSmallText.getText().toString());
+            mDb.updateTreeElement(mCurrent);
             mCurrent = mTree.get(mCurrent.getLeftId());
         }
 
@@ -117,6 +120,9 @@ public class ModifyActivity extends AppCompatActivity {
         if (mCurrent.getRightId() == null) { // If button is create (+)
             addNewNodePair();
         } else { // If button is an arrow
+            mCurrent.setBigText(tbBigText.getText().toString());
+            mCurrent.setSmallText(tbSmallText.getText().toString());
+            mDb.updateTreeElement(mCurrent);
             mCurrent = mTree.get(mCurrent.getRightId());
         }
 
@@ -146,6 +152,8 @@ public class ModifyActivity extends AppCompatActivity {
      * Handler for up arrow click. Only clickable when it is possible to traverse.
      */
     private void onMoveUp() {
+        mCurrent.setBigText(tbBigText.getText().toString());
+        mCurrent.setSmallText(tbSmallText.getText().toString());
         mCurrent = mTree.get(mCurrent.getParentId());
         onCurrentChanged();
     }
@@ -181,6 +189,9 @@ public class ModifyActivity extends AppCompatActivity {
         } else {
             btnMoveRight.setBackground(diagonalArrowImg);
         }
+
+        tbBigText.setText(mCurrent.getBigText() == null ? "" : mCurrent.getBigText());
+        tbSmallText.setText(mCurrent.getSmallText() == null ? "" : mCurrent.getSmallText());
     }
 
     /**
@@ -188,6 +199,10 @@ public class ModifyActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
+        mCurrent.setBigText(tbBigText.getText().toString());
+        mCurrent.setSmallText(tbSmallText.getText().toString());
+        mDb.updateTreeElement(mCurrent);
+
         onCurrentChanged();
         super.onBackPressed();
     }
