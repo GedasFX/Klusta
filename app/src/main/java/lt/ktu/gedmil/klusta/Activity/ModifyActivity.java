@@ -1,6 +1,5 @@
 package lt.ktu.gedmil.klusta.Activity;
 
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ public class ModifyActivity extends AppCompatActivity {
     private int mTreeId;
     private SparseArray<TreeElement> mTree;
     private DatabaseHelper mDb;
-    private boolean mHasUnsavedChanges = false;
     private TreeElement mCurrent;
 
     private ImageButton btnMoveUp;
@@ -44,8 +42,7 @@ public class ModifyActivity extends AppCompatActivity {
         mTree = toSparseArray(treeList);
         //mDb.getWritableDatabase().execSQL("DELETE FROM treedata");
         // Event handlers
-        findViewById(R.id.btnActivityModifyExit).setOnClickListener(v -> onBackPressed());
-        findViewById(R.id.btnActivityModifyCommit).setOnClickListener(v -> saveChanges());
+        findViewById(R.id.btnActivityModifySaveAndExit).setOnClickListener(v -> onBackPressed());
 
         findViewById(R.id.btnActivityModifyMoveUp).setOnClickListener(v -> onMoveUp());
         findViewById(R.id.btnActivityModifyMoveRight).setOnClickListener(v -> onMoveRight());
@@ -191,25 +188,7 @@ public class ModifyActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        if (mHasUnsavedChanges) {
-            // Create a dialog box for confirmation if you wish to save changes before exiting
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.dialog_confirm_exit_nochanges)
-                    .setPositiveButton(R.string.yes, (dialog, which) -> {
-                        saveChanges();
-                        ModifyActivity.super.onBackPressed(); // Has to be in the dialog, otherwise will leak
-                    }).setNegativeButton(R.string.no, (dialog, which) -> {
-                // Continue without saving
-                ModifyActivity.super.onBackPressed(); // Has to be in the dialog, otherwise will leak
-            }).setNeutralButton(R.string.cancel, (dialog, which) -> {
-                // Continue. Consume the onBackPressed event.
-            }).show();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private void saveChanges() {
-        mDb.upsertTreeElements(mTree);
+        onCurrentChanged();
+        super.onBackPressed();
     }
 }

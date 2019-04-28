@@ -104,27 +104,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2"
+        android:weightSum="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/btnActivityModifyExit"
-            android:layout_width="match_parent"
+            android:id="@+id/btnActivityModifySaveAndExit"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/colorCancel"
-            android:text="@string/finish" />
-
-        <Button
-            android:id="@+id/btnActivityModifyCommit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/colorConfirm"
-            android:text="@string/commit" />
+            android:text="@string/save_and_exit" />
 
     </LinearLayout>
 
