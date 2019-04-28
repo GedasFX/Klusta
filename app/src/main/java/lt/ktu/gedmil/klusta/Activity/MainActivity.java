@@ -44,12 +44,7 @@ public class MainActivity extends AppCompatActivity
         lw = findViewById(R.id.treeList);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, TreeEditActivity.class));
-            }
-        });
+        fab.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, TreeEditActivity.class)));
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -61,14 +56,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         lw.setAdapter(adapter);
-        lw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lw.setOnItemClickListener((parent, view, position, id) -> {
+            String item = view.toString();
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = view.toString();
-
-                Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
-            }
+            Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
         });
     }
 
@@ -154,18 +145,12 @@ public class MainActivity extends AppCompatActivity
     public void onDeleteButtonClick(final View view) {
         new AlertDialog.Builder(this)
                 .setMessage(R.string.dialog_confirm_delete)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Tree tree = ((Tree) view.getTag());
-                        db.deleteTree(tree.getId());
-                        adapter.remove(tree);
-                    }
-                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Do nothing
-            }
-        }).show();
+                .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                    Tree tree = ((Tree) view.getTag());
+                    db.deleteTree(tree.getId());
+                    adapter.remove(tree);
+                }).setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    // Do nothing
+                }).show();
     }
 }

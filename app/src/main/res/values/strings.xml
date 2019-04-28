@@ -112,4 +112,7 @@
     <string name="dialog_confirm_delete">Are you sure you wish to delete this tree?</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="dialog_confirm_exit_nochanges">Would you like to save changes?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

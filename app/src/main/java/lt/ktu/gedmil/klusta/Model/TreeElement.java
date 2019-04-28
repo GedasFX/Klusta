@@ -1,7 +1,7 @@
 package lt.ktu.gedmil.klusta.Model;
 
 public class TreeElement {
-    private int id;
+    private Integer id;
     private int treeId;
 
     private Integer parentId;
@@ -13,7 +13,7 @@ public class TreeElement {
 
     private Integer redirect;
 
-    public TreeElement(int id, int treeId, String bigText, String smallText, Integer redirect) {
+    public TreeElement(Integer id, int treeId, String bigText, String smallText, Integer redirect) {
         this.id = id;
         this.treeId = treeId;
         this.bigText = bigText;
@@ -21,19 +21,23 @@ public class TreeElement {
         this.redirect = redirect;
     }
 
-    public TreeElement(int id, int treeId, String bigText, String smallText, Integer redirect, int parentId) {
+    public TreeElement(Integer id, int treeId, String bigText, String smallText, Integer redirect, Integer parentId) {
         this(id, treeId, bigText, smallText, redirect);
         this.parentId = parentId;
     }
 
-    public TreeElement(int id, int treeId, String bigText, String smallText, Integer redirect, Integer parentId, Integer left, Integer right) {
+    public TreeElement(Integer id, int treeId, String bigText, String smallText, Integer redirect, Integer parentId, Integer left, Integer right) {
         this(id, treeId, bigText, smallText, redirect, parentId);
         this.leftId = left;
         this.rightId = right;
     }
 
-    public TreeElement(int id, int treeId) {
+    public TreeElement(Integer id, int treeId) {
+        this(treeId);
         this.id = id;
+    }
+
+    public TreeElement(int treeId) {
         this.treeId = treeId;
     }
 

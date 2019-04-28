@@ -5,9 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
+import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import lt.ktu.gedmil.klusta.Model.Tree;
 import lt.ktu.gedmil.klusta.Model.TreeElement;
@@ -17,7 +20,7 @@ import lt.ktu.gedmil.klusta.Model.TreeElement;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "Klusta";
 
     // Table name
@@ -43,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_LAST_MODIFIED = "lastmodified";
 
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -50,12 +54,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String CREATE_TREEDATA_TABLE = "CREATE TABLE " + TABLE_TREEDATA + " (" +
-                KEY_ID + " INTEGER PRIMARY KEY NOT NULL, " + // Element id
+                KEY_ID + " INTEGER PRIMARY KEY NOT NULL, " + // Entry id
                 KEY_ID_TREE + " INTEGER NOT NULL, " +        // Tree id
-                KEY_ID_REDIRECT + " INTEGER, " +    // Foreign keys for redirect and traversal.
-                KEY_ID_PARENT + " INTEGER, " +
-                KEY_ID_LEFT + " INTEGER, " +
-                KEY_ID_RIGHT + " INTEGER, " +
+                KEY_ID_REDIRECT + " TEXT, " +    // Foreign keys for redirect and traversal.
+                KEY_ID_PARENT + " TEXT, " +
+                KEY_ID_LEFT + " TEXT, " +
+                KEY_ID_RIGHT + " TEXT, " +
                 KEY_BIGTEXT + " TEXT, " +   // Text
                 KEY_SMALLTEXT + " TEXT, " +
                 "FOREIGN KEY(" + KEY_ID_TREE + ") REFERENCES " + TABLE_TREES + "(" + KEY_ID + "), " +
@@ -146,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
 
+        assert 0 != 0;
         assert cursor != null;
         TreeElement el = new TreeElement(id,
                 Integer.parseInt(cursor.getString(1)), // KEY_ID_TREE
@@ -190,19 +195,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<TreeElement> getAllTreeElements(int tree_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        final String selectQuery = "SELECT * FROM " + TABLE_TREEDATA +
-                " WHERE " + KEY_ID_TREE + " = " + tree_id;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.query(TABLE_TREEDATA,
+                new String[]{KEY_ID, KEY_ID_TREE, KEY_BIGTEXT, KEY_SMALLTEXT, KEY_ID_REDIRECT, KEY_ID_PARENT, KEY_ID_LEFT, KEY_ID_RIGHT},
+                KEY_ID_TREE + "=?", new String[]{String.valueOf(tree_id)}, null, null, null, null);
         ArrayList<TreeElement> tree = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                TreeElement treeElement = new TreeElement(Integer.parseInt(cursor.getString(1)), tree_id); // Element id, tree id
-                treeElement.setRedirect(Integer.getInteger(cursor.getString(2)));
-                treeElement.setBigText(cursor.getString(3));
-                treeElement.setSmallText(cursor.getString(4));
-
-                tree.add(treeElement);
+                TreeElement el = new TreeElement(
+                        Integer.parseInt(cursor.getString(0)),  // KEY_ID
+                        Integer.parseInt(cursor.getString(1)),  // KEY_ID_TREE
+                        cursor.getString(2),                    // KEY_BIGTEXT
+                        cursor.getString(3),                    // KEY_SMALLTEXT
+                        tryParseInt(cursor.getString(4)),       // KEY_ID_REDIRECT
+                        tryParseInt(cursor.getString(5)),       // KEY_ID_PARENT
+                        tryParseInt(cursor.getString(6)),       // KEY_ID_LEFT
+                        tryParseInt(cursor.getString(7)));      // KEY_ID_RIGHT
+                tree.add(el);
             } while (cursor.moveToNext());
         }
 
@@ -211,17 +219,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return tree;
     }
 
+    /**
+     * Attempts to parse the integer value of a string. If string is null or invalid, Integer will be null
+     *
+     * @param string Strting to parse
+     * @return Integer of value or null
+     */
+    private Integer tryParseInt(String string) {
+        try {
+            return Integer.parseInt(string);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<Tree> getAllTrees() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        final String selectQuery = "SELECT * FROM " + TABLE_TREES + "" +
-                " ORDER BY " + KEY_LAST_MODIFIED + " DESC";
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID, KEY_NAME, KEY_LAST_MODIFIED}, null, null, null, null, null);
         ArrayList<Tree> trees = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                Tree tree = new Tree(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Long.parseLong(cursor.getString(2))); // Element id, tree id, last opened
+                Tree tree = new Tree(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Long.parseLong(cursor.getString(2))); // Element id, tree name, last opened
                 trees.add(tree);
             } while (cursor.moveToNext());
         }
@@ -291,6 +310,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.update(TABLE_TREES, values, KEY_ID + "=?",
                 new String[]{String.valueOf(treeId)});
+
+        db.close();
+    }
+
+    /**
+     * Updates the treeElement entry in the table. Id, treeId and parentId are immutable.
+     *
+     * @param te Tree element to update
+     */
+    public void updateTreeElement(TreeElement te) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID_REDIRECT, te.getRedirect());
+        values.put(KEY_ID_LEFT, te.getLeftId());
+        values.put(KEY_ID_RIGHT, te.getRightId());
+        values.put(KEY_BIGTEXT, te.getBigText());
+        values.put(KEY_SMALLTEXT, te.getSmallText());
+
+        int updated = db.update(TABLE_TREEDATA, values, KEY_ID + "=?", new String[]{String.valueOf(te.getId())});
+        db.close();
+    }
+
+    public void upsertTreeElements(SparseArray<TreeElement> tree) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        StringBuilder upsertQuery = new StringBuilder();
+        upsertQuery.append("INSERT OR REPLACE INTO " + TABLE_TREEDATA + " (" + KEY_ID + ", " + KEY_ID_TREE + ", " + KEY_ID_REDIRECT + ", " + KEY_ID_PARENT + ", " + KEY_ID_LEFT + ", " + KEY_ID_RIGHT + ", " + KEY_BIGTEXT + ", " + KEY_SMALLTEXT + ") VALUES ");
+        // Foreach hack for sparse arrays
+        for (int i = 0; i < tree.size(); i++) {
+            TreeElement te = tree.get(tree.keyAt(i));
+            upsertQuery.append(String.format(Locale.ENGLISH, "(%d, %d, %d, %d, %d, %d, '%s', '%s'), ", te.getId(), te.getTreeId(), te.getRedirect(), te.getParentId(), te.getLeftId(), te.getRightId(), te.getBigText(), te.getSmallText()));
+        }
+        upsertQuery.setLength(upsertQuery.length() - 2);
+        db.execSQL(upsertQuery.toString());
 
         db.close();
     }
