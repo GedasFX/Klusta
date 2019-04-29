@@ -3,19 +3,19 @@ package lt.ktu.gedmil.klusta.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import lt.ktu.gedmil.klusta.DatabaseHelper;
+import lt.ktu.gedmil.klusta.Model.TreeElement;
 import lt.ktu.gedmil.klusta.R;
 import lt.ktu.gedmil.klusta.Model.Tree;
 
 public class TreeEditActivity extends AppCompatActivity {
 
-    int mTreeId;
-    Tree mTree;
-    DatabaseHelper mDb;
+    private int mTreeId;
+    private Tree mTree;
+    private DatabaseHelper mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,28 +34,23 @@ public class TreeEditActivity extends AppCompatActivity {
         // If tree exists in database (for edit)
         if (mTreeId >= 0) {
             mTree = mDb.getTree(mTreeId);
+            mDb.updateTreeOpenTime(mTreeId);
         } else { // Make new
             mTree = new Tree(""); // Blank name tree
         }
 
         // Fill in the text boxes
-        final TextView tw = findViewById(R.id.textEditTreeName);
+        final TextView tw = findViewById(R.id.textEditTreeEditActivityTreeName);
         tw.setText(mTree.getName());
 
         Button btnCreate = findViewById(R.id.btnCommit);
         btnCreate.setOnClickListener(v -> {
             // Update tree
-            mTree.setName(tw.getText().toString());
-            if (mTree.getName().equals("")) mTree.setName("New Tree");
-            if (mTreeId < 0) {
-                mTreeId = mDb.addTree(mTree);
-            } else {
-                mDb.editTree(mTreeId, mTree);
-            }
+            updateTree(tw.getText().toString());
             finish();
         });
 
-        Button btnEditContents = findViewById(R.id.btnEditTreeContents);
+        Button btnEditContents = findViewById(R.id.btnTreeEditActivityEditTreeContents);
         btnEditContents.setOnClickListener(v -> {
             // If a tree id does not exist.
             if (mTreeId < 0) {
@@ -67,5 +62,15 @@ public class TreeEditActivity extends AppCompatActivity {
             intent.putExtra("TreeId", mTreeId);
             startActivity(intent);
         });
+    }
+
+    private void updateTree(String name) {
+        mTree.setName(name);
+        if (mTreeId < 0) {
+            mTreeId = mDb.addTree(mTree);
+            mDb.addTreeElement(mTreeId, new TreeElement(mTreeId));
+        } else {
+            mDb.editTree(mTreeId, mTree);
+        }
     }
 }

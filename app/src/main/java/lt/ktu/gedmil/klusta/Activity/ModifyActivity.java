@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -12,13 +11,14 @@ import java.util.List;
 import java.util.Objects;
 
 import lt.ktu.gedmil.klusta.DatabaseHelper;
+import lt.ktu.gedmil.klusta.Model.TreeContainer;
 import lt.ktu.gedmil.klusta.Model.TreeElement;
 import lt.ktu.gedmil.klusta.R;
 
 public class ModifyActivity extends AppCompatActivity {
 
     private int mTreeId;
-    private SparseArray<TreeElement> mTree;
+    private TreeContainer mTree;
     private DatabaseHelper mDb;
     private TreeElement mCurrent;
 
@@ -38,9 +38,10 @@ public class ModifyActivity extends AppCompatActivity {
         mTreeId = Objects.requireNonNull(getIntent().getExtras()).getInt("TreeId");
         mDb = new DatabaseHelper(this);
         List<TreeElement> treeList = mDb.getAllTreeElements(mTreeId);
-        mCurrent = findHead(treeList); // Order matters. This adds to the list if empty.
-        mTree = toSparseArray(treeList);
-        //mDb.getWritableDatabase().execSQL("DELETE FROM treedata");
+        mTree = new TreeContainer(mTreeId, treeList);
+        mCurrent = mTree.getHead(); // Order matters. This adds to the list if empty.
+
+
         // Event handlers
         findViewById(R.id.btnActivityModifySaveAndExit).setOnClickListener(v -> onBackPressed());
 
@@ -56,51 +57,6 @@ public class ModifyActivity extends AppCompatActivity {
         tbSmallText = findViewById(R.id.editTextActivityModifySmallText);
 
         onCurrentChanged();
-    }
-
-    private TreeElement findHead(List<TreeElement> tree) {
-        for (TreeElement te : tree) {
-            if (te.getParentId() == null) {
-                return te;
-            }
-        }
-
-        // Head not found - empty tree. Populate it.
-        TreeElement te = new TreeElement(mTreeId);
-        addToDatabase(te);
-        tree.add(te);
-        return te;
-    }
-
-    private SparseArray<TreeElement> toSparseArray(List<TreeElement> tree) {
-        SparseArray<TreeElement> sa = new SparseArray<TreeElement>();
-        for (TreeElement te : tree) {
-            sa.append(te.getId(), te);
-        }
-
-        return sa;
-    }
-
-    /**
-     * Adds an element to the database and returns the element with the generated id.
-     * Changes the parameter te to have an id value. Returns the exact same object as input.
-     *
-     * @param te Tree element with id = null
-     */
-    private void addToDatabase(TreeElement te) {
-        int id = mDb.addTreeElement(mTreeId, te);
-        te.setId(id);
-
-    }
-
-    private TreeElement findById(int id, List<TreeElement> tree) {
-        for (TreeElement te : tree) {
-            if (te.getId() == id) {
-                return te;
-            }
-        }
-
-        return null;
     }
 
     private void onMoveLeft() {
@@ -146,6 +102,17 @@ public class ModifyActivity extends AppCompatActivity {
 
         // Update the current element in the database for leak prevention
         mDb.updateTreeElement(mCurrent);
+    }
+
+    /**
+     * Adds an element to the database and returns the element with the generated id.
+     * Changes the parameter te to have an id value. Returns the exact same object as input.
+     *
+     * @param te Tree element with id = null
+     */
+    private void addToDatabase(TreeElement te) {
+        int id = mDb.addTreeElement(mTreeId, te);
+        te.setId(id);
     }
 
     /**

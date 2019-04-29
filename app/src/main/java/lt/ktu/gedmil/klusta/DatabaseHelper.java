@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.TextUtils;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_BIGTEXT = "bigtext";         // Header text column
     private static final String KEY_SMALLTEXT = "smalltext";     // Main body text column
     private static final String KEY_NAME = "name";
-    private static final String KEY_LAST_MODIFIED = "lastmodified";
+    private static final String KEY_LAST_OPENED = "lastmodified";
 
 
     public DatabaseHelper(Context context) {
@@ -71,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         final String CREATE_TREES_TABLE = "CREATE TABLE " + TABLE_TREES + " ( " +
                 KEY_ID + " INTEGER PRIMARY KEY NOT NULL, " +
                 KEY_NAME + " TEXT NOT NULL, " +
-                KEY_LAST_MODIFIED + " INTEGER NOT NULL)";
+                KEY_LAST_OPENED + " INTEGER NOT NULL)";
 
 
         db.execSQL(CREATE_TREEDATA_TABLE);
@@ -125,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, tree.getName());
-        values.put(KEY_LAST_MODIFIED, System.currentTimeMillis());
+        values.put(KEY_LAST_OPENED, System.currentTimeMillis());
 
         int treeId = (int) db.insert(TABLE_TREES, null, values);
         db.close();
@@ -169,7 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Tree getTree(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        final Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID, KEY_NAME, KEY_LAST_MODIFIED},
+        final Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID, KEY_NAME, KEY_LAST_OPENED},
                 KEY_ID + "=?", new String[]{String.valueOf(id)},
                 null, null, null, null);
 
@@ -236,7 +235,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Tree> getAllTrees() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID, KEY_NAME, KEY_LAST_MODIFIED}, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID, KEY_NAME, KEY_LAST_OPENED}, null, null, null, null, null);
         ArrayList<Tree> trees = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
@@ -289,7 +288,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, tree.getName());
-        values.put(KEY_LAST_MODIFIED, System.currentTimeMillis());
+        values.put(KEY_LAST_OPENED, System.currentTimeMillis());
 
         db.update(TABLE_TREES, values, KEY_ID + "=?",
                 new String[]{String.valueOf(treeId)});
@@ -306,7 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_LAST_MODIFIED, System.currentTimeMillis());
+        values.put(KEY_LAST_OPENED, System.currentTimeMillis());
 
         db.update(TABLE_TREES, values, KEY_ID + "=?",
                 new String[]{String.valueOf(treeId)});
@@ -329,7 +328,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_BIGTEXT, te.getBigText());
         values.put(KEY_SMALLTEXT, te.getSmallText());
 
-        int updated = db.update(TABLE_TREEDATA, values, KEY_ID + "=?", new String[]{String.valueOf(te.getId())});
+        db.update(TABLE_TREEDATA, values, KEY_ID + "=?", new String[]{String.valueOf(te.getId())});
         db.close();
     }
 

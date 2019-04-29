@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/textEditTreeName"
+        android:id="@+id/textEditTreeEditActivityTreeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -62,11 +62,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEditTreeName"
+        app:layout_constraintTop_toBottomOf="@+id/textEditTreeEditActivityTreeName"
         app:layout_constraintVertical_bias="0.11">
 
         <Button
-            android:id="@+id/btnEditTreeContents"
+            android:id="@+id/btnTreeEditActivityEditTreeContents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorConfirm"

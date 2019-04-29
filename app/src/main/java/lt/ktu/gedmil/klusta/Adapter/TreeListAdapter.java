@@ -38,6 +38,7 @@ public class TreeListAdapter extends ArrayAdapter<Tree> {
 
         convertView.findViewById(R.id.btnEditTree).setTag(tree);
         convertView.findViewById(R.id.btnDeleteTree).setTag(tree);
+        convertView.setTag(tree);
 
         assert tree != null;
         textName.setText(tree.getName());

@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import lt.ktu.gedmil.klusta.Adapter.TreeListAdapter;
 import lt.ktu.gedmil.klusta.DatabaseHelper;
@@ -55,16 +54,16 @@ public class MainActivity extends AppCompatActivity
 
         lw.setAdapter(adapter);
         lw.setOnItemClickListener((parent, view, position, id) -> {
-            String item = view.toString();
-
-            Toast.makeText(getBaseContext(), item, Toast.LENGTH_LONG).show();
+            int treeId = ((Tree) view.getTag()).getId();
+            Intent intent = new Intent(MainActivity.this, SwiperActivity.class);
+            intent.putExtra("TreeId", treeId);
+            startActivity(intent);
         });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         updateList();
     }
 
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity
                     db.deleteTree(tree.getId());
                     adapter.remove(tree);
                 }).setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    // Do nothing
-                }).show();
+            // Do nothing
+        }).show();
     }
 }
