@@ -9,12 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.TreeEditActivity"></activity>
+        <activity android:name=".Activity.TreeEditActivity" />
         <activity android:name=".Activity.DonateActivity" />
-        <activity
-            android:name=".Activity.SwiperActivity"
-            android:label="@string/title_activity_swiper"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.SwiperActivity" />
         <activity
             android:name=".Activity.ModifyActivity"
             android:label="@string/title_activity_modify" />
@@ -25,7 +22,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

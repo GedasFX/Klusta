@@ -29,6 +29,10 @@ public class TreeContainer extends SparseArray<TreeElement> implements Iterable<
         return null;
     }
 
+    public int getTreeId() {
+        return mTreeId;
+    }
+
     @NonNull
     @Override
     public Iterator<TreeElement> iterator() {
