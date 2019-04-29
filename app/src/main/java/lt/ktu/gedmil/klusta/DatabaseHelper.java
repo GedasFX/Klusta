@@ -149,7 +149,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
 
-        assert 0 != 0;
         assert cursor != null;
         TreeElement el = new TreeElement(id,
                 Integer.parseInt(cursor.getString(1)), // KEY_ID_TREE
@@ -235,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Tree> getAllTrees() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID, KEY_NAME, KEY_LAST_OPENED}, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_TREES, new String[]{KEY_ID, KEY_NAME, KEY_LAST_OPENED}, null, null, null, null, KEY_LAST_OPENED + " DESC");
         ArrayList<Tree> trees = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
