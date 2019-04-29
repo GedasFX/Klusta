@@ -118,4 +118,5 @@
     <string name="save_and_exit">Save and exit</string>
     <string name="at_root_of_tree">You are already at the root of the tree.</string>
     <string name="at_end_of_tree">You have reached the end of the tree.</string>
+    <string name="text_copied">Tree was copied to your clipboard.</string>
 </resources>

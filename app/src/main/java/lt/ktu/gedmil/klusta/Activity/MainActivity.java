@@ -1,6 +1,9 @@
 package lt.ktu.gedmil.klusta.Activity;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,10 +19,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import lt.ktu.gedmil.klusta.Adapter.TreeListAdapter;
 import lt.ktu.gedmil.klusta.DatabaseHelper;
+import lt.ktu.gedmil.klusta.Model.Serial.SerialTree;
+import lt.ktu.gedmil.klusta.Model.Serial.SerialTreeElement;
 import lt.ktu.gedmil.klusta.Model.Tree;
+import lt.ktu.gedmil.klusta.Model.TreeContainer;
+import lt.ktu.gedmil.klusta.Model.TreeElement;
 import lt.ktu.gedmil.klusta.R;
 
 public class MainActivity extends AppCompatActivity
@@ -27,7 +37,6 @@ public class MainActivity extends AppCompatActivity
 
     private TreeListAdapter adapter;
     private DatabaseHelper db;
-    private ListView lw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +47,7 @@ public class MainActivity extends AppCompatActivity
 
         db = new DatabaseHelper(this);
         adapter = new TreeListAdapter(this, R.layout.tree_list_adapter_view, db.getAllTrees());
-        lw = findViewById(R.id.treeList);
+        ListView lw = findViewById(R.id.treeList);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, TreeEditActivity.class)));
@@ -149,5 +158,46 @@ public class MainActivity extends AppCompatActivity
                 }).setNegativeButton(R.string.cancel, (dialog, which) -> {
             // Do nothing
         }).show();
+    }
+
+    /**
+     * Handler for Share button click. Information about the tree is stored in the tag.
+     */
+    public void onShareButtonClick(View view) {
+        Tree dbTree = (Tree) view.getTag();
+        TreeContainer dbContents = new TreeContainer(dbTree.getId(), db.getAllTreeElements(dbTree.getId()));
+        TreeElement head = dbContents.getHead();
+        SerialTreeElement el = new SerialTreeElement(head.getBigText(), head.getSmallText());
+        fillSerialNode(el, head, dbContents);
+
+        SerialTree serialTree = new SerialTree(dbTree.getName(), el);
+
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("JSONTree", serialTree.serialize());
+        clipboardManager.setPrimaryClip(clipData);
+
+        Toast.makeText(this, R.string.text_copied, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Transers TreeContainer data to SerialTreeElement type. Updates serialTreeElements data.
+     *
+     * @param serialTreeElement Element to transfer data over to. Initialize with node with empty left and right children.
+     * @param current           Current element of contents container
+     * @param contents          Container for initial data
+     */
+    public void fillSerialNode(SerialTreeElement serialTreeElement, TreeElement current, TreeContainer contents) {
+        if (current.getLeftId() == null || current.getRightId() == null)
+            return;
+
+        TreeElement left = contents.get(current.getLeftId());
+        TreeElement right = contents.get(current.getRightId());
+        SerialTreeElement leftSerial = new SerialTreeElement(left.getBigText(), left.getSmallText());
+        SerialTreeElement rightSerial = new SerialTreeElement(right.getBigText(), right.getSmallText());
+        serialTreeElement.setLeft(leftSerial);
+        serialTreeElement.setRight(rightSerial);
+
+        fillSerialNode(leftSerial, left, contents);
+        fillSerialNode(rightSerial, right, contents);
     }
 }

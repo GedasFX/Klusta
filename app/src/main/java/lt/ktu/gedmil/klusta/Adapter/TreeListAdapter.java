@@ -33,11 +33,12 @@ public class TreeListAdapter extends ArrayAdapter<Tree> {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         convertView = inflater.inflate(resource, parent, false);
 
-        TextView textName = convertView.findViewById(R.id.textTreeName);
-        TextView textLastAccessed = convertView.findViewById(R.id.textDateLastAccessed);
+        TextView textName = convertView.findViewById(R.id.textTreeListAdapterTreeName);
+        TextView textLastAccessed = convertView.findViewById(R.id.textTreeListAdapterDateLastAccessed);
 
-        convertView.findViewById(R.id.btnEditTree).setTag(tree);
-        convertView.findViewById(R.id.btnDeleteTree).setTag(tree);
+        convertView.findViewById(R.id.btnTreeListAdapterEditTree).setTag(tree);
+        convertView.findViewById(R.id.btnTreeListAdapterDeleteTree).setTag(tree);
+        convertView.findViewById(R.id.btnTreeListAdapterShareTree).setTag(tree);
         convertView.setTag(tree);
 
         assert tree != null;
